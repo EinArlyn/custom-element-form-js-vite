@@ -1,9 +1,7 @@
 <script lang="ts">
     import { defineComponent, ref, onMounted } from 'vue';
     //@ts-ignore
-    import { FormEditor } from '@bpmn-io/form-js';
-    import './custom-component-form-js/render.js';
-    import './custom-component-form-js/panel-properties.js';
+    import FormEditor from '@einarlyn/custom-form-editor'
 
     export default defineComponent({
         name: 'App',
@@ -20,17 +18,10 @@
             });
 
             onMounted(async () => {
-                const { renderExtensions, propertiesPanelExtensions } = (window as any);
-
                 formEditorRef.value = new FormEditor({
-                container: document.querySelector('#form-editor'),
-                additionalModules: [
-                    renderExtensions,
-                    propertiesPanelExtensions,
-                ],
+                    container: document.querySelector('#form-editor'),
                 });
-
-                await formEditorRef.value.importSchema(schema.value);
+                formEditorRef.value.importSchema(schema.value);
             });
 
             return {};

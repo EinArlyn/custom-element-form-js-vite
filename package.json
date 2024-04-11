@@ -10,9 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@bpmn-io/form-js": "^1.7.3",
-    "@bpmn-io/properties-panel": "^3.18.2",
-    "diagram-js": "^14.3.1",
+    "@einarlyn/custom-form-editor": "^0.1.11",
     "path": "^0.12.7",
     "vue": "^3.4.21"
   },
