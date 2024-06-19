@@ -11,16 +11,7 @@ const schema = ref({
     version: '0.1.0',
   },
   type: 'default',
-  components: [
-    {
-      key: 'creditor',
-      label: 'Creditor',
-      type: 'textfield',
-      validate: {
-        required: true,
-      },
-    },
-  ],
+  components: [],
 });
 
 onMounted(async () => {
