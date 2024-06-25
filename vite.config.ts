@@ -1,13 +1,31 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import path from "path";
+import minifyBundles from './src/plugins/minifyBundles';
+// import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  optimizeDeps: {
-    include: ['@einarlyn/custom-form-editor']
-  }
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('custom-form-editor')) {
+            return 'customFormEditor';
+          }
+
+          return 'app';
+        },
+      },
+      plugins: [
+        minifyBundles(),
+      ]
+    },
+    minify: false,
+  },
+  // optimizeDeps: {
+  //   include: ['@einarlyn/custom-form-editor']
+  // }
   // resolve: {
   //   alias: {
   //     'preact/hooks': path.resolve(__dirname, 'node_modules/preact/hooks/dist/hooks.module.js'),
