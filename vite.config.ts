@@ -5,12 +5,17 @@ import minifyBundles from './src/plugins/minifyBundles';
 
 export default defineConfig({
   plugins: [vue()],
+  optimizeDeps: {
+    exclude: [
+      '@einarlyn/bpmn-form-extended',
+      '@bpmn-io/properties-panel',
+      '@bpmn-io/form-js',
+    ],
+  },
   build: {
     rollupOptions: {
       output: {
-
         manualChunks(id) {
-          console.log('id', id);
           if (id.includes('bpmn-form-extended')) {
             return 'customFormEditor';
           }
@@ -24,18 +29,4 @@ export default defineConfig({
     },
     minify: false,
   },
-  // optimizeDeps: {
-  //   include: ['@einarlyn/custom-form-editor']
-  // }
-  // resolve: {
-  //   alias: {
-  //     'preact/hooks': path.resolve(__dirname, 'node_modules/preact/hooks/dist/hooks.module.js'),
-  //     'preact/jsx-runtime': path.resolve(__dirname, 'node_modules/preact/jsx-runtime/dist/jsxRuntime.module.js'),
-  //     'preact/compat': path.resolve(__dirname, 'node_modules/preact/compat/dist/compat.module.js'),
-  //     'preact': path.resolve(__dirname, 'node_modules/preact/dist/preact.module.js'),
-  //     '../preact/hooks': path.resolve(__dirname, 'node_modules/preact/hooks/dist/hooks.module.js'),
-  //     '../preact/jsx-runtime': path.resolve(__dirname, 'node_modules/preact/jsx-runtime/dist/jsxRuntime.module.js'),
-  //     '../preact': path.resolve(__dirname, 'node_modules/preact/dist/preact.module.js')
-  //   },
-  // },
 });
