@@ -1,82 +1,41 @@
-import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
-// @ts-ignore
-import { terser } from 'rollup-plugin-terser';
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import minifyBundles from './src/plugins/minifyBundles';
+// import path from "path";
 
 export default defineConfig({
   plugins: [vue()],
-  resolve: {
-    alias: {
-      '@': '/src',
+  build: {
+    rollupOptions: {
+      output: {
+
+        manualChunks(id) {
+          console.log('id', id);
+          if (id.includes('bpmn-form-extended')) {
+            return 'customFormEditor';
+          }
+
+          return 'app';
+        },
+      },
+      plugins: [
+        minifyBundles(),
+      ]
     },
+    minify: false,
   },
-  optimizeDeps: {
-    exclude: ['@einarlyn/bpmn-form-extended'],
-  },
-  // build: {
-  //   rollupOptions: {
-  //     plugins: [
-  //       terser({
-  //         compress: {
-  //           drop_console: false,
-  //           pure_funcs: ['RangeField', 'formFields.register'],
-  //         },
-  //         mangle: {
-  //           reserved: ['RangeField', 'formFields'],
-  //           keep_classnames: true,
-  //           keep_fnames: true,
-  //         },
-  //         format: {
-  //           comments: false,
-  //         },
-  //         module: true,
-  //       }),
-  //     ],
-  //     external: [
-  //       '@einarlyn/bpmn-form-extended',
-  //       '@bpmn-io/properties-panel',
-  //       '@bpmn-io/form-js',
-  //     ],
-  //     output: {
-  //       globals: {
-  //         '@einarlyn/bpmn-form-extended': '@einarlyn/bpmn-form-extended',
-  //         '@bpmn-io/properties-panel': '@bpmn-io/properties-panel',
-  //         '@bpmn-io/form-js': '@bpmn-io/form-js',
-  //       },
-  //       manualChunks(id) {
-  //         if (
-  //           id.includes('@einarlyn/bpmn-form-extended') ||
-  //           id.includes('@bpmn-io/properties-panel') ||
-  //           id.includes('@bpmn-io/form-js')
-  //         ) {
-  //           console.log('id', id);
-  //           return 'no-minify';
-  //         }
-  //       },
-  //     },
-  //   },
-  //   commonjsOptions: {
-  //     include: [/node_modules/, 'classnames'],
-  //     exclude: [
-  //       '@einarlyn/bpmn-form-extended',
-  //       '@bpmn-io/properties-panel',
-  //       '@bpmn-io/form-js',
-  //     ],
-  //     transformMixedEsModules: true,
-  //   },
-  //   terserOptions: {
-  //     mangle: {
-  //       keep_classnames: true,
-  //       keep_fnames: true,
-  //       reserved: ['RangeField', 'formFields'],
-  //     },
-  //     compress: {
-  //       drop_console: false,
-  //       pure_funcs: ['RangeField', 'formFields.register'],
-  //     },
-  //     format: {
-  //       comments: false,
-  //     },
+  // optimizeDeps: {
+  //   include: ['@einarlyn/custom-form-editor']
+  // }
+  // resolve: {
+  //   alias: {
+  //     'preact/hooks': path.resolve(__dirname, 'node_modules/preact/hooks/dist/hooks.module.js'),
+  //     'preact/jsx-runtime': path.resolve(__dirname, 'node_modules/preact/jsx-runtime/dist/jsxRuntime.module.js'),
+  //     'preact/compat': path.resolve(__dirname, 'node_modules/preact/compat/dist/compat.module.js'),
+  //     'preact': path.resolve(__dirname, 'node_modules/preact/dist/preact.module.js'),
+  //     '../preact/hooks': path.resolve(__dirname, 'node_modules/preact/hooks/dist/hooks.module.js'),
+  //     '../preact/jsx-runtime': path.resolve(__dirname, 'node_modules/preact/jsx-runtime/dist/jsxRuntime.module.js'),
+  //     '../preact': path.resolve(__dirname, 'node_modules/preact/dist/preact.module.js')
   //   },
   // },
 });
