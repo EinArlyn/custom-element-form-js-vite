@@ -7,15 +7,18 @@
     "dev": "vite",
     "dev:debug": "vite --debug",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "build:dev": "vue-tsc && vite build --mode dev",
+    "preview": "vite preview",
+    "docker": "docker-compose up --build -d"
   },
   "dependencies": {
-    "@einarlyn/custom-form-editor": "^0.1.11",
+    "@einarlyn/bpmn-form-extended": "^1.1.86",
     "path": "^0.12.7",
     "vue": "^3.4.21"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
+    "terser": "^5.31.1",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vue-tsc": "^2.0.6"
