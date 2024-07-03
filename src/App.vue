@@ -1,33 +1,35 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-//@ts-ignore
-import { FormEditor, Form } from '@einarlyn/bpmn-form-extended';
+import { h, ref, computed } from 'vue';
+import { MenuProps } from 'ant-design-vue';
+import { EditOutlined, AppstoreOutlined } from '@ant-design/icons-vue';
+import FormEditor from './components/FormEditor.vue';
+import FormViewer from './components/FormViewer.vue';
 
-const formEditorRef = ref<FormEditor | null>(null);
-const schema = ref({
-  schemaVersion: 4,
-  exporter: {
-    name: 'form-js',
-    version: '0.1.0',
+const current = ref<string[]>(['editor']);
+const items = ref<MenuProps['items']>([
+  {
+    key: 'editor',
+    icon: () => h(EditOutlined),
+    label: 'Form Editor',
+    title: 'Form Editor',
   },
-  type: 'default',
-  components: [],
-});
+  {
+    key: 'view',
+    icon: () => h(AppstoreOutlined),
+    label: 'Form Viewer',
+    title: 'Form Viewer',
+  },
+]);
 
-onMounted(async () => {
-  try {
-    formEditorRef.value = new FormEditor({
-      container: document.querySelector('#form-editor'),
-    });
-    await formEditorRef.value.importSchema(schema.value);
-  } catch (error: any) {
-    console.error((error as Error).message, (error as Error).stack);
-  }
+const handleMenu = computed(() => {
+  return current.value[0];
 });
 </script>
 
 <template>
-  <div id="form-editor"></div>
+  <a-menu v-model:selectedKeys="current" mode="horizontal" :items="items" />
+  <FormEditor v-if="handleMenu === 'editor'" />
+  <FormViewer v-else-if="handleMenu === 'view'" />
 </template>
 
-<style scoped></style>
+<style lang="css" scoped></style>

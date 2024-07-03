@@ -1,15 +1,25 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
+import vue from '@vitejs/plugin-vue';
 import minifyBundles from './src/plugins/minifyBundles';
-// import path from "path";
+import Components from 'unplugin-vue-components/vite';
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    Components({
+      resolvers: [
+        AntDesignVueResolver({
+          importStyle: false, // css in js
+        }),
+      ],
+    }),
+  ],
   optimizeDeps: {
     exclude: [
       '@einarlyn/bpmn-form-extended',
-      '@bpmn-io/properties-panel',
-      '@bpmn-io/form-js',
+      // '@bpmn-io/properties-panel',
+      // '@bpmn-io/form-js',
     ],
   },
   build: {
@@ -23,9 +33,7 @@ export default defineConfig({
           return 'app';
         },
       },
-      plugins: [
-        minifyBundles(),
-      ]
+      plugins: [minifyBundles()],
     },
     minify: false,
   },
