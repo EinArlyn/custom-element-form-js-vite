@@ -12,7 +12,7 @@
     "docker": "docker-compose up --build -d"
   },
   "dependencies": {
-    "@einarlyn/bpmn-form-extended": "^1.2.36",
+    "@einarlyn/bpmn-form-extended": "^1.2.37",
     "ant-design-vue": "^4.2.3",
     "path": "^0.12.7",
     "vue": "^3.4.21"
