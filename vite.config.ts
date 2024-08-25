@@ -1,22 +1,40 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import path from "path";
+import { defineConfig } from 'vite';
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
+import vue from '@vitejs/plugin-vue';
+import minifyBundles from './src/plugins/minifyBundles';
+import Components from 'unplugin-vue-components/vite';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    Components({
+      resolvers: [
+        AntDesignVueResolver({
+          importStyle: false, // css in js
+        }),
+      ],
+    }),
+  ],
   optimizeDeps: {
-    include: ['@einarlyn/custom-form-editor']
-  }
-  // resolve: {
-  //   alias: {
-  //     'preact/hooks': path.resolve(__dirname, 'node_modules/preact/hooks/dist/hooks.module.js'),
-  //     'preact/jsx-runtime': path.resolve(__dirname, 'node_modules/preact/jsx-runtime/dist/jsxRuntime.module.js'),
-  //     'preact/compat': path.resolve(__dirname, 'node_modules/preact/compat/dist/compat.module.js'),
-  //     'preact': path.resolve(__dirname, 'node_modules/preact/dist/preact.module.js'),
-  //     '../preact/hooks': path.resolve(__dirname, 'node_modules/preact/hooks/dist/hooks.module.js'),
-  //     '../preact/jsx-runtime': path.resolve(__dirname, 'node_modules/preact/jsx-runtime/dist/jsxRuntime.module.js'),
-  //     '../preact': path.resolve(__dirname, 'node_modules/preact/dist/preact.module.js')
-  //   },
-  // },
-})
+    exclude: [
+      '@einarlyn/bpmn-form-extended',
+      // '@bpmn-io/properties-panel',
+      // '@bpmn-io/form-js',
+    ],
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('bpmn-form-extended')) {
+            return 'customFormEditor';
+          }
+
+          return 'app';
+        },
+      },
+      plugins: [minifyBundles()],
+    },
+    minify: false,
+  },
+});
